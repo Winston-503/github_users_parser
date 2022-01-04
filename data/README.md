@@ -1,0 +1,1 @@
+This folder contains collected data in *.xlsx format (Microsoft Excel).

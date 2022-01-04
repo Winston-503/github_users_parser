@@ -6,6 +6,7 @@ Search for GitHub repositories with multiple keywords and filter the authors of 
 
 - Advanced GitHub search to form a query - https://github.com/search/advanced
 - PyGithub documentation - https://pygithub.readthedocs.io/en/latest/introduction.html
+- Searching for information on GitHub - https://docs.github.com/en/search-github
 
 ## Installation and setup
 

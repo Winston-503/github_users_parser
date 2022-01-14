@@ -21,3 +21,5 @@ You can also install these libraries using conda or pip directly. To see the lis
 Open `github_parser.py` and follow instructions from the **Setting parameters** section. 
 
 To explore code or to make your experiments see `github_parser.ipynb` notebook. It contains the same code.
+
+Approximately 2 seconds for a person.

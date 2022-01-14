@@ -1,0 +1,2 @@
+This file must contain your GitHub access token, in one line, something like:
+IppbRe4dzGv5a5WQNffbNXRY2gASYLaE26h8CVjZc

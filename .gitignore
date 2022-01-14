@@ -1,6 +1,4 @@
 .ipynb_checkpoints
-data/*
-!data/README.md
-data/access_tokens/*
-!data/access_tokens/README.md
-!data/access_tokens/access_token_example.txt
+
+data/*.xlsx
+data/access_tokens/access_token.txt

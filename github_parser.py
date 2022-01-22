@@ -1,5 +1,5 @@
 # GitHub users parser
-# originally published in 
+# originally published in https://gitlab.com/Winston-90/github_users_parser
 
 # Imports
 import pandas as pd
@@ -7,7 +7,7 @@ from github import Github
 
 
 # GitHubUsersParser() class
-class GitHubUsersParser():
+class GitHubUsersParser:
     """ 
     A class that represents parser to get information about GitHub users
     Create an instance of the class by providing information about your token
@@ -21,14 +21,14 @@ class GitHubUsersParser():
 
     def __init__(self, token_or_path, is_path=True):
         """ 
-        Create PyGithub Github() object to request information 
+        Create PyGithub Github() object to request information
 
         Parameters:
             token_or_path (str): access token or path to .txt file 
                 that contains it.
-                To know more, visit: https://github.com/settings/tokens
-            is_path (bool): if true, 'token_or_path' must be path 
-                to .txt file containing access token. 
+                To get the token, visit: https://github.com/settings/tokens
+            is_path (bool): if true, 'token_or_path' must be path
+                to .txt file containing access token.
                 If false 'token_or_path' must be access token
         """
 
@@ -63,14 +63,14 @@ class GitHubUsersParser():
         print("The test request was successfully executed")
 
     def __add_to_users(self, user, repo):
-        """ 
-        Private method to append information about 'user' and 'repo' 
+        """
+        Private method to append information about 'user' and 'repo'
         into 'users' list
 
         Parameters:
-            user (PyGithub NamedUser): user object received 
+            user (PyGithub NamedUser): user object received
                 for example using g.get_user()
-            repo (PyGithub Repository): repository object received 
+            repo (PyGithub Repository): repository object received
                 for example using g.get_repo()
         """
 
@@ -87,13 +87,42 @@ class GitHubUsersParser():
 
         self.users.append(data)
 
-    def __save_users_to_xlsx(self, filename):
-        """ 
-        Private method to save information about 'users' into Excel file
+    def __save_users(self, filename, test=False):
+        """
+        Private method to save information about 'users' into file
 
         Parameters:
-            filename (str): filename to save including extension (.xlsx)
+            filename (str): filename to save including extension (.xlsx or .csv)
+            test (bool): if True provide test save to check that filename is valid
+
+        Returns:
+            -1 if an error occurred while saving the file,
+            otherwise - None
         """
+
+        if filename[-3:] == 'csv':
+            to_csv = True
+        elif filename[-4:] == 'xlsx':
+            to_csv = False
+        else:
+            print("Unsupported file format. " +
+                  "'filename_to_save' must have an .xlsx or .csv extension")
+            return -1
+
+        if test:
+            try:
+                if to_csv:
+                    pd.DataFrame().to_csv(filename, index=False)
+                else:
+                    pd.DataFrame().to_excel(filename, index=False)
+            except Exception as e:
+                print("An error occurred while saving a file.\n" +
+                      "Check 'filename_to_save'.")
+                print("Error: " + str(e))
+                return -1
+
+            print("The test saving was successfully executed.")
+            return
 
         # define DataFrame from list of dict
         users_df = pd.DataFrame(
@@ -106,32 +135,44 @@ class GitHubUsersParser():
         users_df.fillna(' ', inplace=True)
 
         # save file
-        users_df.to_excel(filename, index=False)
+        if to_csv:
+            users_df.to_csv(filename, index=False)
+        else:
+            users_df.to_excel(filename, index=False)
 
-        print(f"Data about users was saved into '{filename}' " +
+        print(f"\nData about users was saved into '{filename}' " +
               f"file ({users_df.shape[0]} rows).")
 
     def parse_users(self, query, keywords, max_count, filename):
-        """ 
+        """
         Parse GitHub users with set parameters
-        Save information about users into Excel table when the number 
+        Save information about users into table when the number
         of users reaches the desired number or when an error occurs
 
         Parameters:
             query (str): query without keywords. See https://github.com/search/advanced
             keywords (list of str): list of keywords to search
             max_count (int): the desired number of users to get
-            filename (str): filename to save resulting data including extension (.xlsx)
+            filename (str): filename to save resulting data including extension (.xlsx or .csv)
         """
 
-        print("Start parsing with the following parameters:\n" +
+        self.users = []
+        count = 0
+
+        # test saving to check that filename is valid
+        if self.__save_users(filename, test=True) == -1:
+            # error saving the file
+            return
+
+        if not isinstance(max_count, int) or max_count <= 0:
+            print("'max_count' must be positive integer")
+            return
+
+        print("\nStart parsing with the following parameters:\n" +
               f"\tquery = '{query}'\n" +
               f"\tkeywords = {keywords}\n" +
               f"\tmax_count = {max_count}\n" +
               f"\tfilename = '{filename}'\n")
-
-        self.users = []
-        count = 0
 
         # for all users from the request response
         for user in self.g.search_users(query=query):
@@ -154,55 +195,56 @@ class GitHubUsersParser():
             except Exception as e:
                 print("An error occurred while executing the query")
                 print("Error: " + str(e))
-                self.__save_users_to_xlsx(filename)
+                self.__save_users(filename)
                 return
 
             if count == max_count:
-                self.__save_users_to_xlsx(filename)
+                self.__save_users(filename)
                 return
 
 
-########################################################################################################
-# Setting parameters
-
-# access token or path to .txt file that contains it
-# To know more, visit: https://github.com/settings/tokens
-access_token_path = 'data/access_tokens/access_token.txt'            
-    
-# if true, 'token_or_path' must be path to .txt file containing access token
-# if false 'token_or_path' must be access token
-is_path = True
-
-# or set your access token explicitly
-# access_token_path = "IppbRe4dzGv5a5WQNffbNXRY2gASYLaE26h8CVjZc"
-# is_path = False
-
-# query without keywords
-# see https://github.com/search/advanced
-query = "language:python location:Moscow"
-
-# the desired number of users to get
-max_count = 5
-
-# list of keywords to search
-# ['keyword1', 'keyword2', 'keyword3']
-keywords_list = ['django', 'flask']
-
-# filename to save resulting data including extension (.xlsx)
-filename_to_save = 'data/users.xlsx'
-
-########################################################################################################
-
 # Main program
 def main():
+    ########################################################################################################
+    # Setting parameters
+
+    # access token or path to .txt file that contains it
+    # To get the token, visit: https://github.com/settings/tokens
+    token_or_path = 'data/access_tokens/access_token.txt'
+
+    # if True, 'token_or_path' must be path to .txt file containing access token
+    # if False, 'token_or_path' must be access token
+    is_path = True
+
+    # or set your access token explicitly
+    # token_or_path = "ghp_Re4dzGv5a5WQNffbNXRY2gASYLaE26h8CVjZc"
+    # is_path = False
+
+    # query without keywords
+    # see https://github.com/search/advanced
+    query = "language:python location:USA"
+
+    # the desired number of users to get
+    max_count = 5
+
+    # list of keywords to search
+    # ['keyword1', 'keyword2', 'keyword3']
+    keywords_list = ['django', 'flask']
+
+    # filename to save resulting data including extension (.xlsx or .csv)
+    filename_to_save = 'data/users.xlsx'
+
+    ########################################################################################################
+
     # create class instance using access token
-    github_parser = GitHubUsersParser(access_token_path, is_path)
+    github_parser = GitHubUsersParser(token_or_path, is_path)
 
     # parsing with set parameters
-    github_parser.parse_users(query=query, 
-                            keywords=keywords_list, 
-                            max_count=max_count, 
-                            filename=filename_to_save)
+    github_parser.parse_users(query=query,
+                              keywords=keywords_list,
+                              max_count=max_count,
+                              filename=filename_to_save)
+
 
 if __name__ == '__main__':
     main()

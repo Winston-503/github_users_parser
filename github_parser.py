@@ -21,14 +21,14 @@ class GitHubUsersParser:
 
     def __init__(self, token_or_path, is_path=True):
         """ 
-        Create PyGithub Github() object to request information
+        Create PyGithub Github() object to request information 
 
         Parameters:
             token_or_path (str): access token or path to .txt file 
                 that contains it.
                 To get the token, visit: https://github.com/settings/tokens
-            is_path (bool): if true, 'token_or_path' must be path
-                to .txt file containing access token.
+            is_path (bool): if true, 'token_or_path' must be path 
+                to .txt file containing access token. 
                 If false 'token_or_path' must be access token
         """
 
@@ -63,14 +63,14 @@ class GitHubUsersParser:
         print("The test request was successfully executed")
 
     def __add_to_users(self, user, repo):
-        """
-        Private method to append information about 'user' and 'repo'
+        """ 
+        Private method to append information about 'user' and 'repo' 
         into 'users' list
 
         Parameters:
-            user (PyGithub NamedUser): user object received
+            user (PyGithub NamedUser): user object received 
                 for example using g.get_user()
-            repo (PyGithub Repository): repository object received
+            repo (PyGithub Repository): repository object received 
                 for example using g.get_repo()
         """
 
@@ -88,7 +88,7 @@ class GitHubUsersParser:
         self.users.append(data)
 
     def __save_users(self, filename, test=False):
-        """
+        """ 
         Private method to save information about 'users' into file
 
         Parameters:
@@ -97,7 +97,7 @@ class GitHubUsersParser:
 
         Returns:
             -1 if an error occurred while saving the file,
-            otherwise - None
+            otherwise - None 
         """
 
         if filename[-3:] == 'csv':
@@ -144,9 +144,9 @@ class GitHubUsersParser:
               f"file ({users_df.shape[0]} rows).")
 
     def parse_users(self, query, keywords, max_count, filename):
-        """
+        """ 
         Parse GitHub users with set parameters
-        Save information about users into table when the number
+        Save information about users into table when the number 
         of users reaches the desired number or when an error occurs
 
         Parameters:
@@ -182,6 +182,15 @@ class GitHubUsersParser:
                     # form repo_string as repo name and description
                     description_str = repo.description if repo.description else ''
                     repo_string = repo.name + ' ' + description_str
+                    
+                    # without keywords
+                    if not keywords:
+                        # add this user in the result table
+                        self.__add_to_users(user, repo)
+                        count += 1
+                        print(f"{count}/{max_count} - add {user.name}")
+                        # go to the next user
+                        break
 
                     # if any keyword is contained in any users repository
                     if any(keyword in repo_string for keyword in keywords):

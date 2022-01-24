@@ -1,1 +1,1 @@
-This folder contains the collected data in *.xlsx format (Microsoft Excel).
+This folder contains the collected data and a subfolder for access tokens.

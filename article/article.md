@@ -27,7 +27,7 @@ In fact, this article can be finished right now. I spent most of my time trying 
 
 Let me explain the functionality of the program using a good old flowchart. It is very high-level and misses a lot of details, but it will do to understand what is happening.
 
-| ![flowchart.jpg](./img/flowchart.jpg) |
+| ![parser_flowchart.png](./img/parser_flowchart.png) |
 |:--:|
 | <b>The essence of the program. Image by Author</b>|
 

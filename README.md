@@ -2,13 +2,13 @@
 
 Search for GitHub users with multiple keywords using Python and PyGithub library
 
-![preview.jpg](./article/img/preview.jpg)
+![preview.jpg](./data/preview.jpg)
 
 ## Setup and Usage
 
-See the detailed tutorial on [Medium](https://medium.com/@andimid/how-to-parse-github-users-based-on-location-and-multiple-keywords-c08d68578c8d) or on [GitLab](https://gitlab.com/Winston-90/github_users_parser/-/blob/main/article/article.md) directly.
+See the detailed tutorial on [Medium](https://medium.com/@andimid/how-to-parse-github-users-based-on-location-and-multiple-keywords-c08d68578c8d).
 
-- Make sure you have Python and needed libraries installed. Otherwise [install Python](https://www.python.org/downloads/) and install the libraries:
+- Make sure you have Python and needed libraries installed. Otherwise, [install Python](https://www.python.org/downloads/) and install the libraries:
     - You should create a virtual environment (although it is not necessary), activate it, and run `pip install -r requirements.txt`. 
     - You can also install these libraries using conda or pip directly. You can see the list of libraries in the `requirements.txt` file.
 - Open `github_parser.py` file with any text editor and set your parameters in the **Setting parameters** section, **on lines 165-194**. Remember that you have to specify the access token:

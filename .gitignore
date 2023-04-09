@@ -1,5 +1,8 @@
+.idea
 .ipynb_checkpoints
 
 data/*.csv
 data/*.xlsx
 data/access_tokens/access_token.txt
+
+article

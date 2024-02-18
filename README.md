@@ -17,7 +17,7 @@ See the detailed tutorial on [Medium](https://medium.com/@andimid/how-to-parse-g
 
 To explore code or to make your experiments see `github_parser.ipynb` notebook. It contains the same code as python script.
 
-## Useful links
+## Useful Links
 
 - Advanced GitHub search to form a query - https://github.com/search/advanced
 - PyGithub documentation - https://pygithub.readthedocs.io/en/latest/introduction.html
